@@ -26,11 +26,11 @@ function rpca_inexact_alm(D::AbstractMatrix;
     total_svd = 0
     sv = 10
     while !converged
-        # Update sparse matrix E
+        # update sparse matrix E
         temp_T = D - A + (1.0 / μ) * Y;
         E = max(temp_T - λ / μ, 0) + min(temp_T + λ / μ, 0)
 
-        # Force non-negative
+        # force non-negative
         E = max(E, 0) # heuristic
         U, S, V = svd(D - E + 1.0 / μ * Y)
 
@@ -54,9 +54,7 @@ function rpca_inexact_alm(D::AbstractMatrix;
         Y = Y + μ * Z;
         μ = min(μ * ρ, μ̄)
 
-        # objective function
         objective = norm(Z) / d_norm;
-
         if objective < error_tol
             converged = true
         end
