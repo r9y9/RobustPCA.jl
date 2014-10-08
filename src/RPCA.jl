@@ -1,5 +1,7 @@
 module RPCA
 
-# package code goes here
+export rpca_inexact_alm
+
+include("inexact_alm.jl")
 
 end # module
