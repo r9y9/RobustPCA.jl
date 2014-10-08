@@ -4,7 +4,7 @@
 # so that D = A + E.
 function rpca_inexact_alm(D::AbstractMatrix;
                           max_iter::Int=1000, error_tol::Float64=1.0e-7,
-                          ρ::Float64=1.5)
+                          ρ::Float64=1.5, verbose::Bool=false)
     const M, N = size(D)
     const λ = 1 / sqrt(M)
 
@@ -55,7 +55,14 @@ function rpca_inexact_alm(D::AbstractMatrix;
         μ = min(μ * ρ, μ̄)
 
         objective = norm(Z) / d_norm;
+        if verbose
+            println("#$(epoch) objective: $(objective)")
+        end
+
         if objective < error_tol
+            if verbose
+                println("converged")
+            end
             converged = true
         end
         
