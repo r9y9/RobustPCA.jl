@@ -8,51 +8,50 @@ function rpca_inexact_alm(D::AbstractMatrix;
     const M, N = size(D)
     const λ = 1 / sqrt(M)
 
-    A, E = zeros(M, N), zeros(M, N)
+    A⁰, E⁰ = zeros(M, N), zeros(M, N)
     
     # initialize
-    Y = copy(D)
-    const norm² = svdvals(Y)[1] # can be tuned
-    const norm∞ = maximum(abs(Y)) / λ
+    Y⁰ = copy(D)
+    const norm² = svdvals(Y⁰)[1] # can be tuned
+    const norm∞ = maximum(abs(Y⁰)) / λ
     const dual_norm = max(norm², norm∞)
     const d_norm = norm(D)
-    Y /= dual_norm
+    Y⁰ /= dual_norm
 
-    μ = 1.25 / norm²
-    const μ̄ = μ * 1.0e+7
+    μ⁰ = 1.25 / norm²
+    const μ̄ = μ⁰ * 1.0e+7
 
     converged = false
     epoch = 0
-    total_svd = 0
-    sv = 10
+    sv⁰ = 10
+
+    Yᵏ, Aᵏ, Eᵏ, μᵏ, svᵏ = Y⁰, A⁰, E⁰, μ⁰, sv⁰
     while !converged
         # update sparse matrix E
-        temp_T = D - A + (1.0 / μ) * Y;
-        E = max(temp_T - λ / μ, 0) + min(temp_T + λ / μ, 0)
+        temp_T = D - Aᵏ + μᵏ^-1 * Yᵏ
+        Eᵏ = max(temp_T - λ / μᵏ, 0) + min(temp_T + λ / μᵏ, 0)
 
         # force non-negative
-        E = max(E, 0) # heuristic
-        U, S, V = svd(D - E + 1.0 / μ * Y)
+        Eᵏ = max(Eᵏ, 0) # heuristic
+        U, S, V = svd(D - Eᵏ + μᵏ^-1 * Yᵏ)
 
         # trancate dimention
-        svp = int(sum(S .> 1 / μ))
-        if svp < sv
-            sv = min(svp + 1, N);
+        svpᵏ = int(sum(S .> 1 / μᵏ))
+        if svpᵏ < svᵏ
+            svᵏ = min(svpᵏ + 1, N);
         else
-            sv = min(svp + 0.05 * N + 0.5, N)
+            svᵏ = min(svpᵏ + round(0.05 * N), N)
         end
 
         # update A
-        S_th = diagm(S[1:svp] - 1.0 / μ)
-        A = U[:,1:svp] * S_th * V[:,1:svp]'
+        Aᵏ = U[:,1:svpᵏ] * diagm(S[1:svpᵏ] - μᵏ^-1) * V[:,1:svpᵏ]'
 
         # force non-negative
-        A = max(A, 0)
+        Aᵏ = max(Aᵏ, 0)
 
-        total_svd += 1;
-        Z = D - A - E;
-        Y = Y + μ * Z;
-        μ = min(μ * ρ, μ̄)
+        Z = D - Aᵏ - Eᵏ;
+        Yᵏ = Yᵏ + μᵏ * Z;
+        μᵏ = min(μᵏ * ρ, μ̄)
 
         objective = norm(Z) / d_norm;
         if verbose
@@ -72,5 +71,5 @@ function rpca_inexact_alm(D::AbstractMatrix;
         end
     end
 
-    return A, E
+    return Aᵏ, Eᵏ
 end
