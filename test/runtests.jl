@@ -24,4 +24,4 @@ Â, Ê = rpca_inexact_alm(D)
 @test_approx_eq_eps Â A 1.0e-6
 @test_approx_eq_eps Ê E 1.0e-6
 # reconstruction eror
-@test norm(D - (A + E)) < 1.0e-6
+@test norm(D - (Â + Ê)) < 1.0e-6
