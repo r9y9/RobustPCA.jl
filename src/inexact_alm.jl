@@ -36,7 +36,7 @@ function rpca_inexact_alm(D::AbstractMatrix;
         U, S, V = svd(D - Eᵏ + μᵏ^-1 * Yᵏ)
 
         # trancate dimention
-        svpᵏ = int(sum(S .> 1 / μᵏ))
+        svpᵏ = int(sum(S .> μᵏ^-1))
         if svpᵏ < svᵏ
             svᵏ = min(svpᵏ + 1, N);
         else
