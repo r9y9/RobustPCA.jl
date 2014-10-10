@@ -4,7 +4,7 @@ soft_threshold(x, ϵ::Float64) = max(x - ϵ , 0) + min(x - ϵ, 0)
 # RPCA using the inexact Augumented Lagrange Multiplier (ALM).
 # Given a observation matrix D, find row-rank matrix A and sparse matrix E
 # so that D = A + E.
-function rpca_inexact_alm(D::AbstractMatrix;
+function inexact_alm_rpca(D::AbstractMatrix;
                           max_iter::Int=1000, error_tol::Float64=1.0e-7,
                           ρ::Float64=1.5, verbose::Bool=false,
                           nonnegativeA::Bool=true, nonnegativeE::Bool=true)
