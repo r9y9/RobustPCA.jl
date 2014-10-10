@@ -7,7 +7,7 @@ soft_threshold(x, ϵ::Float64) = max(x - ϵ , 0) + min(x - ϵ, 0)
 function rpca_inexact_alm(D::AbstractMatrix;
                           max_iter::Int=1000, error_tol::Float64=1.0e-7,
                           ρ::Float64=1.5, verbose::Bool=false,
-                          nonnegativeA=true, nonnegativeE=true)
+                          nonnegativeA::Bool=true, nonnegativeE::Bool=true)
     const M, N = size(D)
     const λ = 1 / sqrt(M)
 
