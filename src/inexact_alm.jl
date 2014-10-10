@@ -6,7 +6,8 @@ soft_threshold(x, ϵ::Float64) = max(x - ϵ , 0) + min(x - ϵ, 0)
 # so that D = A + E.
 function rpca_inexact_alm(D::AbstractMatrix;
                           max_iter::Int=1000, error_tol::Float64=1.0e-7,
-                          ρ::Float64=1.5, verbose::Bool=false)
+                          ρ::Float64=1.5, verbose::Bool=false,
+                          nonnegativeA=true, nonnegativeE=true)
     const M, N = size(D)
     const λ = 1 / sqrt(M)
 
@@ -31,9 +32,10 @@ function rpca_inexact_alm(D::AbstractMatrix;
     while !converged
         # update sparse matrix E
         Eᵏ = soft_threshold(D - Aᵏ + μᵏ^-1 * Yᵏ, λ * μᵏ^-1)
-        
-        # force non-negative
-        Eᵏ = max(Eᵏ, 0) # heuristic
+        # force non-negative (heuristic)
+        if nonnegativeE
+            Eᵏ = max(Eᵏ, 0)
+        end
 
         U, S, V = svd(D - Eᵏ + μᵏ^-1 * Yᵏ)
 
@@ -47,8 +49,10 @@ function rpca_inexact_alm(D::AbstractMatrix;
 
         # update row-rank matrix A
         Aᵏ = U[:,1:svpᵏ] * diagm(S[1:svpᵏ] - μᵏ^-1) * V[:,1:svpᵏ]'
-        # force non-negative
-        Aᵏ = max(Aᵏ, 0)
+        # force non-negative (heuristic)
+        if nonnegativeA
+            Aᵏ = max(Aᵏ, 0)
+        end
 
         Z = D - Aᵏ - Eᵏ;
 
