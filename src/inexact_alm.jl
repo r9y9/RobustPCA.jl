@@ -42,7 +42,7 @@ function inexact_alm_rpca(D::AbstractMatrix;
         # trancate dimention
         svpᵏ = int(sum(S .> μᵏ^-1))
         if svpᵏ < svᵏ
-            svᵏ = min(svpᵏ + 1, N);
+            svᵏ = min(svpᵏ + 1, N)
         else
             svᵏ = min(svpᵏ + round(0.05 * N), N)
         end
@@ -54,12 +54,12 @@ function inexact_alm_rpca(D::AbstractMatrix;
             Aᵏ = max(Aᵏ, 0)
         end
 
-        Z = D - Aᵏ - Eᵏ;
+        Z = D - Aᵏ - Eᵏ
 
-        Yᵏ = Yᵏ + μᵏ * Z;
+        Yᵏ = Yᵏ + μᵏ * Z
         μᵏ = min(μᵏ * ρ, μ̄)
 
-        objective = norm(Z) / d_norm;
+        objective = norm(Z) / d_norm
         if verbose
             println("#$(k) objective: $(objective)")
         end
