@@ -1,3 +1,23 @@
+using PyCall
+
+if false
+    @pyimport scipy.sparse.linalg as splinalg
+end
+
+# rearange_scipy_sparse_svds converts a result of scipy.sparse.linalg.svds to
+# that of the julia svd.
+function rearange_scipy_sparse_svds!(U, S, V)
+    const M, K = size(U)
+    V = V'
+    for k=1:K
+        U[:, k] = U[:, end+1-k]
+        V[:, k] = V[:, end+1-k]
+    end
+    reverse!(S)
+
+    return U, S, V
+end
+
 # Soft thresholding function
 soft_threshold(x, ϵ::Float64) = max(x - ϵ, 0) + min(x - ϵ, 0)
 
@@ -38,6 +58,10 @@ function inexact_alm_rpca(D::AbstractMatrix;
         end
 
         U, S, V = svd(D - Eᵏ + μᵏ^-1 * Yᵏ)
+        if false
+            U, S, V = splinalg.svds(D - Eᵏ + μᵏ^-1 * Yᵏ, k=min(svᵏ, M-1, N-1))
+            U, S, V = rearange_scipy_sparse_svds!(U, S, V)
+        end
 
         # trancate dimention
         svpᵏ = int(sum(S .> μᵏ^-1))
