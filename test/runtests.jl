@@ -19,7 +19,7 @@ E = [0.0        0.0        0.0        0.347445  0.312757 ;
      0.0490157  0.0        6.5061e-7  0.312169  0.0      ;
      0.443569   0.0        0.714425   0.0       0.192445]
 
-Â, Ê = inexact_alm_rpca(D)
+Â, Ê = inexact_alm_rpca(D, nonnegativeE=true, nonnegativeA=true)
  
 @test_approx_eq_eps Â A 1.0e-6
 @test_approx_eq_eps Ê E 1.0e-6
