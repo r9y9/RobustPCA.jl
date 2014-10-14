@@ -1,5 +1,5 @@
 # Soft thresholding function
-soft_threshold(x, ϵ::Float64) = max(x - ϵ, 0) + min(x - ϵ, 0)
+soft_threshold(x, ϵ::Float64) = max(x - ϵ, 0) + min(x + ϵ, 0)
 
 # RPCA using the inexact Augumented Lagrange Multiplier (ALM).
 # Given a observation matrix D, find row-rank matrix A and sparse matrix E
