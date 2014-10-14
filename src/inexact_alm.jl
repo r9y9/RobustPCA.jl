@@ -5,18 +5,19 @@ soft_threshold(x, ϵ::Float64) = max(x - ϵ, 0) + min(x - ϵ, 0)
 # Given a observation matrix D, find row-rank matrix A and sparse matrix E
 # so that D = A + E.
 function inexact_alm_rpca(D::AbstractMatrix;
+                          sparseness::Float64=1.0/sqrt(maximum(size(D))),
                           max_iter::Int=1000, error_tol::Float64=1.0e-7,
                           ρ::Float64=1.5, verbose::Bool=false,
                           nonnegativeA::Bool=true, nonnegativeE::Bool=true)
     const M, N = size(D)
-    const λ = 1 / sqrt(M)
+    const λ = sparseness
 
     A⁰, E⁰ = zeros(M, N), zeros(M, N)
     
     # initialize
     Y⁰ = copy(D)
     const norm² = svdvals(Y⁰)[1] # can be tuned
-    const norm∞ = maximum(abs(Y⁰)) / λ
+    const norm∞ = norm(vec(Y⁰), Inf) / λ
     const dual_norm = max(norm², norm∞)
     const d_norm = norm(D)
     Y⁰ /= dual_norm
