@@ -8,7 +8,7 @@ function inexact_alm_rpca(D::AbstractMatrix;
                           sparseness::Float64=1.0/sqrt(maximum(size(D))),
                           max_iter::Int=1000, error_tol::Float64=1.0e-7,
                           ρ::Float64=1.5, verbose::Bool=false,
-                          nonnegativeA::Bool=true, nonnegativeE::Bool=true)
+                          nonnegativeA::Bool=false, nonnegativeE::Bool=false)
     const M, N = size(D)
     const λ = sparseness
 
