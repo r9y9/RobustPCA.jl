@@ -11,3 +11,14 @@ RPCA.jl provides a support for Robust Principal Component Analysis (RPCA) in Jul
 ```julia
 Pkg.clone("https://github.com/r9y9/RPCA.jl")
 ```
+
+## Applications
+
+### Singing-voice separation from monaural recordings
+
+- [P.S Huang, S.D. Chen, P. Smaragdis, and M. HasegawaJohnson, "Singing-voice separation from monaural recordings using robust principal component analysis", Proc. ICASSP 2012.](http://www.mirlab.org/conference_papers/International_Conference/ICASSP%202012/pdfs/0000057.pdf)
+
+```julia
+cd demo
+julia Huang2012_singing_source_separation.jl
+```
