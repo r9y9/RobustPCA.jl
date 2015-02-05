@@ -3,10 +3,10 @@
 using WAV
 using RobustPCA
 
-include("stft.jl")
+include(joinpath(dirname(@__FILE__), "stft.jl"))
 
 filename = "titon_2_07_SNR5.wav"
-x, fs = wavread(filename)
+x, fs = wavread(joinpath(dirname(@__FILE__), filename))
 x = vec(x)
 
 framelen = 1024
@@ -22,7 +22,7 @@ X, P = abs(Xᶜ), angle(Xᶜ)
 # S: sparse matrix
 elapsed_rpca = @elapsed begin
     s = 1.0/sqrt(maximum(size(X)))
-    A, E = inexact_alm_rpca(X, verbose=true, error_tol=1.0e-7,
+    A, E = inexact_alm_rpca(X; verbose=true, error_tol=1.0e-7,
                             sparseness=s)
 end
 println("Elapsed time in Robust PCA: $(elapsed_rpca) sec.")
