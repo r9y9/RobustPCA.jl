@@ -1,4 +1,4 @@
-using RPCA
+using RobustPCA
 using Base.Test
 
 D = [0.462911    0.365901  0.00204357    0.692873    0.935861;

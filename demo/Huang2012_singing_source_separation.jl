@@ -1,7 +1,7 @@
 # Singing voice separation demo using Robust PCA
 
 using WAV
-using RPCA
+using RobustPCA
 
 include("stft.jl")
 

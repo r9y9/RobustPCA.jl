@@ -1,4 +1,4 @@
-module RPCA
+module RobustPCA
 
 # Robust Principal Component Analysis (RPCA) in Julia
 
