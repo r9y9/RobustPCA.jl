@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/r9y9/RobustPCA.jl.svg?branch=master)](https://travis-ci.org/r9y9/RobustPCA.jl)
 
-RobustPCA.jl provides a support for Robust Principal Component Analysis (RPCA) in Julia language. This implementation basically follows the following paper:
+RobustPCA.jl provides a support for Robust Principal Component Analysis (RPCA) in Julia language. The optimization algorithm implemented in this package basically follows:
 
 - [Lin, Zhouchen, Minming Chen, and Yi Ma. "The augmented lagrange multiplier method for exact recovery of corrupted low-rank matrices." arXiv preprint arXiv:1009.5055 (2010)](http://arxiv.org/pdf/1009.5055.pdf).
 
-## Install
+## Installalation
 
 ```julia
 Pkg.clone("https://github.com/r9y9/RobustPCA.jl")
