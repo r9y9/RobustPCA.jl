@@ -1,6 +1,7 @@
 # RobustPCA
 
 [![Build Status](https://travis-ci.org/r9y9/RobustPCA.jl.svg?branch=master)](https://travis-ci.org/r9y9/RobustPCA.jl)
+[![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
 
 RobustPCA.jl provides a support for Robust Principal Component Analysis (RPCA) in Julia language. The optimization algorithm implemented in this package basically follows:
 
