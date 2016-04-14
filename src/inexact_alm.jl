@@ -1,5 +1,5 @@
 # Soft thresholding function
-soft_threshold(x, ϵ::Float64) = max(x - ϵ, 0) + min(x + ϵ, 0)
+@inline soft_threshold(x, ϵ) = max(x - ϵ, 0) + min(x + ϵ, 0)
 
 # RPCA using the inexact Augumented Lagrange Multiplier (ALM).
 # Given a observation matrix D, find row-rank matrix A and sparse matrix E
@@ -44,7 +44,7 @@ function inexact_alm_rpca(D::AbstractMatrix;
         U, S, V = svd(D - Eᵏ + μᵏ^-1 * Yᵏ)
 
         # trancate dimention
-        svpᵏ = int(sum(S .> μᵏ^-1))
+        svpᵏ = trunc(Int, sum(S .> μᵏ^-1))
         if svpᵏ < svᵏ
             svᵏ = min(svpᵏ + 1, N)
         else

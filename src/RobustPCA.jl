@@ -1,3 +1,4 @@
+__precompile__(true)
 module RobustPCA
 
 # Robust Principal Component Analysis (RPCA) in Julia
